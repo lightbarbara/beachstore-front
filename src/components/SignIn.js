@@ -2,7 +2,7 @@ import styled from "styled-components"
 import FormSignIn from "./FormSignIn.js"
 import { Link } from "react-router-dom"
 
-export default function SignIn(){
+export default function SignIn() {
     
 
     return(
