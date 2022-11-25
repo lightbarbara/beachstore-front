@@ -1,122 +1,87 @@
-/* import axios from "axios";
-import { useNavigate } from "react-router-dom"; */
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import styled from "styled-components";
+import { urlBack } from "../constants/urls";
 
-export default function FormSignIn(){
+export default function FormSignIn() {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [form, setForm] = useState({
+        email: '',
+        password: ''
+    })
 
-    /* const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    function login(e){
+    function handleForm(e) {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    async function login(e) {
         e.preventDefault()
 
-        const URL = "http://localhost:5000/signIn"
+        try {
+            const res = await axios.post(`${urlBack}/signIn`, form)
 
-        const body = {
-            email: email,
-            password: password
+            localStorage.setItem('token', JSON.stringify(res.data.token))
+            localStorage.setItem('name', JSON.stringify(res.data.name))
+            navigate('/products')
+        } catch (err) {
+            alert(err.response.data.message)
         }
-        
-        console.log(body)
-        const promisse = axios.post(URL, body)
+    }
 
-        promisse.then((res) => {
-            console.log(res.data)
-            localStorage.setItem('name', JSON.stringify(res.data.name));
-            localStorage.setItem('token', JSON.stringify(res.data.token));
-
-            navigate("/register");
-
-        })
-
-        promisse.catch((err) => {
-            alert(err.response.data.error)
-            
-        })
-
-    } */
-
-    return(
-        <Container>
-            <Form /* onSubmit={login} */>
-            <div className="primeiro-input">
-                <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Digite o email..."
-                    required />
-            </div>
-            <div className="segundo-input">
-                <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Digite sua senha..."
-                    required
-                />
-            </div>
-            <div><button type="submit">{'Entrar'}</button></div>
-            </Form>
-            
-        </Container>
+    return (
+        <Form onSubmit={login}>
+            <input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleForm}
+                placeholder="Email"
+                required />
+            <input
+                name="password"
+                type="password"
+                value={form.password}
+                onChange={handleForm}
+                placeholder="Senha"
+                required
+            />
+            <button type="submit">Entrar</button>
+        </Form>
     )
 
 }
 
-const Container = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-`
 const Form = styled.form`
-    height: 160px;
-    
-    
-.primeiro-input{
-    margin-top: 24px;
-}
-.segundo-input{
-    margin-top: 13px;
-    margin-bottom: 13px;
+display: flex;
+flex-direction: column;
+gap: 1vh;
+cursor: pointer;
+
+input, button {
+	width: 80vw;
+	height: 5vh;
+	border-radius: 5px;
+	border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.75vh;
+    padding: 0 14px;
+    box-sizing: border-box
 }
 
-input {
-    height: 58px;
-    width: 326px;
-    border-radius: 5px;
-    
-    border: none;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
+input, input::placeholder {
     font-weight: 400;
-    line-height: 23px;
-    text-align: left;
-
+    color: #505050;
 }
 
-button{
-    height: 46px;
-    width: 326px;
-    left: 23px;
-    top: 375px;
-    border-radius: 5px;
-    background-color: #A328D6;
-    border: none;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
+button {
+    background-color: #7BC5C1;
+    color: white;
     font-weight: 700;
-    line-height: 23px;  
-    text-align: center;
-
-    color: #ffffff;
 }
-
 `
