@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from '../assets/GlobalStyle'
-import Cart from "./Cart";
-import Checkout from "./Checkout";
-import Products from "./Products";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
+import Products from "../pages/Products";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
 
 export default function App() {
   return (
