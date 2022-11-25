@@ -64,6 +64,12 @@ export default function FormSignUp() {
                 placeholder="Senha"
                 required
             />
+            <input
+                type='password'
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                placeholder='Confirme a senha'
+                required />
             <button type="submit">Entrar</button>
         </Form>
     )
