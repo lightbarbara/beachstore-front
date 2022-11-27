@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { urlBack } from "../constants/urls";
 import Form from './Form'
+import { useContext } from "react"
+import { UserContext } from "../contexts/UserContext.js"
 
 export default function FormSignIn() {
+
+    const { setToken } = useContext(UserContext)
 
     const [form, setForm] = useState({
         email: '',
@@ -25,9 +29,7 @@ export default function FormSignIn() {
 
         try {
             const res = await axios.post(`${urlBack}/signIn`, form)
-
-            localStorage.setItem('token', JSON.stringify(res.data.token))
-            localStorage.setItem('name', JSON.stringify(res.data.name))
+            setToken(res.data.token)
             navigate('/products')
         } catch (err) {
             alert(err.response.data.message)

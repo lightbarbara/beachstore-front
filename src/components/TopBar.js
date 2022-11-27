@@ -1,10 +1,28 @@
+import axios from "axios"
+import { useContext } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { urlBack } from '../constants/urls'
+import { UserContext } from "../contexts/UserContext"
 
 export default function TopBar({ opcao }) {
 
-    function logout() {
-        
+    const { token, setToken } = useContext(UserContext)
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+
+    async function logout() {
+        try {
+            await axios.delete(urlBack, config)
+            setToken('')
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 
     return (
