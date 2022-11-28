@@ -17,4 +17,5 @@ height: 100vh;
 padding: 0 5vw;
 padding-top: 90px;
 background-color: #D3E3E2;
+box-sizing: border-box;
 `
