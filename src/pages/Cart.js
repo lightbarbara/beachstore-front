@@ -5,6 +5,7 @@ import TopBar from "../components/TopBar"
 import { urlBack } from "../constants/urls"
 import { UserContext } from "../contexts/UserContext"
 import deleteIcon from '../assets/delete.png'
+import { Link } from "react-router-dom"
 
 function Empty() {
     return (
@@ -22,7 +23,11 @@ function Product({ p }) {
         }
     }
 
+    console.log(p)
+
     async function deleteProduct() {
+
+        // await axios.delete(`${urlBack}/p._id`)
 
     }
 
@@ -44,7 +49,10 @@ function CartProducts() {
 
     return (
         <CartProductsContainer>
-            <p>Meu carrinho</p>
+            <div>
+                <p>Meu carrinho</p>
+                <Link to='/checkout'><button>Finalizar compra</button></Link>
+            </div>
             <div>
                 {cart.products.map(p => <Product p={p} />)}
             </div>
@@ -117,7 +125,26 @@ padding: 0 5vw;
 font-size: 20px;
 box-sizing: border-box;
 
-& > div {
+& > div:nth-child(1) {
+    display: flex;
+    width: 90vw;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        background-color: #B25D3A;
+        height: 50px;
+        width: 100px;
+        border: none;
+        color: #D3E3E2;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: 'Solway', serif;
+        font-size: 14px;
+    }
+}
+
+& > div:nth-child(2) {
     display: flex;
     gap: 20px;
     width: 90vw;
