@@ -3,25 +3,57 @@ import TopBar from "../components/TopBar"
 import cartao from '../assets/cartao.png'
 import pix from '../assets/pix.png'
 import boleto from '../assets/boleto.png'
+import { useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { UserContext } from "../contexts/UserContext"
+import axios from "axios"
+import { urlBack } from "../constants/urls"
 
 export default function Checkout() {
+
+    const { setOption, option, token, cart } = useContext(UserContext)
+
+    const navigate = useNavigate()
+
+    async function payment() {
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const sale = { ...cart, option }
+
+        try {
+
+            await axios.post(`${urlBack}/sale`, sale, config)
+            await axios.delete(`${urlBack}/cart`, config)
+
+            navigate('/payment')
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <Container>
             <TopBar />
             <p>Escolha o modo de pagamento:</p>
-            <div>
+            <div onClick={() => setOption('cartao')}>
                 <p>Cartão</p>
                 <img src={cartao} alt='cartao' />
             </div>
-            <div>
+            <div onClick={() => setOption('pix')}>
                 <p>Pix</p>
                 <img src={pix} alt='pix' />
             </div>
-            <div>
+            <div onClick={() => setOption('boleto')}>
                 <p>Boleto</p>
                 <img src={boleto} alt='boleto' />
             </div>
+            <button onClick={payment}>Fazer pagamento</button>
         </Container>
     )
 }
@@ -57,4 +89,16 @@ gap: 20px;
         height: 50px;
     }
 }
+
+button {
+    background-color: #B25D3A;
+    height: 50px;
+    width: 100px;
+    border: none;
+    color: #D3E3E2;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: 'Solway', serif;
+    font-size: 14px;
+    }
 `
