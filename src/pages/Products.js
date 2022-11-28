@@ -163,7 +163,7 @@ box-sizing: border-box;
 `
 
 const ProductContainer = styled.div`
-width: 200px;
+min-width: 200px;
 height: 220px;
 display: flex;
 flex-direction: column;
@@ -180,7 +180,7 @@ font-size: 17px;
     box-sizing: border-box;
 }
 
-div {
+& > div {
     display: flex;
     justify-content: space-between;
     align-items: center;

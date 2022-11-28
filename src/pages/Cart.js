@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import TopBar from "../components/TopBar"
 import { urlBack } from "../constants/urls"
@@ -13,9 +13,9 @@ function Empty() {
     )
 }
 
-function Product({ p }) {
+function Product({ p, deleted, setDeleted }) {
 
-    const { setNewProducts, token } = useContext(UserContext)
+    const { token } = useContext(UserContext)
 
     const config = {
         headers: {
@@ -23,12 +23,15 @@ function Product({ p }) {
         }
     }
 
-    console.log(p)
-
     async function deleteProduct() {
 
-        // await axios.delete(`${urlBack}/p._id`)
+        setDeleted(!deleted)
 
+        try {
+            await axios.delete(`${urlBack}/cart/${p._id}`, config)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -43,7 +46,7 @@ function Product({ p }) {
     )
 }
 
-function CartProducts() {
+function CartProducts({ deleted, setDeleted }) {
 
     const { cart } = useContext(UserContext)
 
@@ -54,7 +57,7 @@ function CartProducts() {
                 <Link to='/checkout'><button>Finalizar compra</button></Link>
             </div>
             <div>
-                {cart.products.map(p => <Product p={p} />)}
+                {cart.products.map(p => <Product p={p} deleted={deleted} setDeleted={setDeleted} />)}
             </div>
         </CartProductsContainer>
     )
@@ -63,6 +66,8 @@ function CartProducts() {
 export default function Cart() {
 
     const { cart, setCart, token } = useContext(UserContext)
+
+    const [deleted, setDeleted] = useState(false)
 
     const config = {
         headers: {
@@ -85,14 +90,12 @@ export default function Cart() {
 
         getCart()
 
-    }, [])
-
-    console.log(cart)
+    }, [deleted])
 
     return (
         <Container cart={cart}>
             <TopBar opcao='produtos' />
-            {cart.length === 0 ? <Empty /> : <CartProducts />}
+            {cart.length === 0 ? <Empty /> : <CartProducts deleted={deleted} setDeleted={setDeleted} />}
         </Container>
     )
 }
