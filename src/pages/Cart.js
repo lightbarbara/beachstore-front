@@ -1,10 +1,11 @@
 import axios from "axios"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import TopBar from "../components/TopBar"
 import { urlBack } from "../constants/urls"
 import { UserContext } from "../contexts/UserContext"
 import deleteIcon from '../assets/delete.png'
+import { Link } from "react-router-dom"
 
 function Empty() {
     return (
@@ -12,9 +13,9 @@ function Empty() {
     )
 }
 
-function Product({ p }) {
+function Product({ p, deleted, setDeleted }) {
 
-    const { setNewProducts, token } = useContext(UserContext)
+    const { token } = useContext(UserContext)
 
     const config = {
         headers: {
@@ -24,6 +25,13 @@ function Product({ p }) {
 
     async function deleteProduct() {
 
+        setDeleted(!deleted)
+
+        try {
+            await axios.delete(`${urlBack}/cart/${p._id}`, config)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -38,15 +46,18 @@ function Product({ p }) {
     )
 }
 
-function CartProducts() {
+function CartProducts({ deleted, setDeleted }) {
 
     const { cart } = useContext(UserContext)
 
     return (
         <CartProductsContainer>
-            <p>Meu carrinho</p>
             <div>
-                {cart.products.map(p => <Product p={p} />)}
+                <p>Meu carrinho</p>
+                <Link to='/checkout'><button>Finalizar compra</button></Link>
+            </div>
+            <div>
+                {cart.products.map(p => <Product p={p} deleted={deleted} setDeleted={setDeleted} />)}
             </div>
         </CartProductsContainer>
     )
@@ -55,6 +66,8 @@ function CartProducts() {
 export default function Cart() {
 
     const { cart, setCart, token } = useContext(UserContext)
+
+    const [deleted, setDeleted] = useState(false)
 
     const config = {
         headers: {
@@ -77,14 +90,12 @@ export default function Cart() {
 
         getCart()
 
-    }, [])
-
-    console.log(cart)
+    }, [deleted])
 
     return (
         <Container cart={cart}>
             <TopBar opcao='produtos' />
-            {cart.length === 0 ? <Empty /> : <CartProducts />}
+            {cart.length === 0 ? <Empty /> : <CartProducts deleted={deleted} setDeleted={setDeleted} />}
         </Container>
     )
 }
@@ -117,7 +128,26 @@ padding: 0 5vw;
 font-size: 20px;
 box-sizing: border-box;
 
-& > div {
+& > div:nth-child(1) {
+    display: flex;
+    width: 90vw;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        background-color: #B25D3A;
+        height: 50px;
+        width: 100px;
+        border: none;
+        color: #D3E3E2;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: 'Solway', serif;
+        font-size: 14px;
+    }
+}
+
+& > div:nth-child(2) {
     display: flex;
     gap: 20px;
     width: 90vw;
