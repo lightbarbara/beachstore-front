@@ -32,7 +32,7 @@ export default function FormSignIn() {
             setToken(res.data.token)
             navigate('/products')
         } catch (err) {
-            alert(err.response.data)
+            alert(err.response.data.message)
         }
     }
 

@@ -141,6 +141,7 @@ display: flex;
 flex-direction: column;
 gap: 15px;
 font-size: 20px;
+box-sizing: border-box;
 `
 
 const CategoryContainer = styled.div`
