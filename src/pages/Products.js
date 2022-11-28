@@ -14,7 +14,7 @@ function Empty() {
 
 function Product({ p }) {
 
-    const { newProducts, setNewProducts, token } = useContext(UserContext)
+    const { setNewProducts, token } = useContext(UserContext)
 
     const config = {
         headers: {
@@ -23,11 +23,11 @@ function Product({ p }) {
     }
 
     async function addToCart() {
-        setNewProducts([...newProducts, p])
+        setNewProducts([p])
         try {
 
             await axios.post(`${urlBack}/cart`, {
-                products: [...newProducts, p]
+                products: [p]
             }, config)
 
             alert('Produto adicionado ao carrinho!')

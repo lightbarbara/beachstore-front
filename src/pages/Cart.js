@@ -5,13 +5,27 @@ import TopBar from "../components/TopBar"
 import { urlBack } from "../constants/urls"
 import { UserContext } from "../contexts/UserContext"
 
+function Empty() {
+    return (
+        <p>Você não adicionou nada em seu carrinho!</p>
+    )
+}
+
+function CartProducts() {
+    return (
+        <CartProductsContainer>
+            <p>Meu carrinho</p>
+        </CartProductsContainer>
+    )
+}
+
 export default function Cart() {
 
     const { cart, setCart, token } = useContext(UserContext)
 
     const config = {
         headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     }
 
@@ -32,11 +46,12 @@ export default function Cart() {
 
     }, [])
 
-    // console.log(cart)
+    console.log(cart)
 
     return (
-        <Container>
+        <Container cart={cart}>
             <TopBar opcao='produtos' />
+            {cart.length === 0 ? <Empty /> : <CartProducts />}
         </Container>
     )
 }
@@ -49,4 +64,14 @@ padding: 0 5vw;
 padding-top: 90px;
 background-color: #D3E3E2;
 box-sizing: border-box;
+font-family: 'Solway', serif;
+display: flex;
+justify-content: ${props => props.cart.length > 0 ? 'initial' : 'center'};
+align-items: ${props => props.cart.length > 0 ? 'initial' : 'center'};
+text-align: ${props => props.cart.length > 0 ? 'initial' : 'center'};
+color: #B25D3A;
+`
+
+const CartProductsContainer = styled.div`
+
 `
