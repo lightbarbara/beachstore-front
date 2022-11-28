@@ -28,7 +28,7 @@ export default function FormSignIn() {
         e.preventDefault()
 
         try {
-            const res = await axios.post(`${urlBack}/signIn`, form)
+            const res = await axios.post(`${urlBack}`, form)
             setToken(res.data.token)
             navigate('/products')
         } catch (err) {

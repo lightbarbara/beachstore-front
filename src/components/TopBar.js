@@ -39,7 +39,7 @@ export default function TopBar({ opcao }) {
 
 const Container = styled.div`
 font-family: 'Solway', serif;
-position: absolute;
+position: fixed;
 top: 0;
 left: 0;
 width: 100vw;
