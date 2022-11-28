@@ -13,16 +13,39 @@ function Empty() {
 }
 
 function Product({ p }) {
+
+    const { newProducts, setNewProducts, token } = useContext(UserContext)
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+
+    async function addToCart() {
+        setNewProducts([...newProducts, p])
+        try {
+
+            await axios.post(`${urlBack}/cart`, {
+                products: [...newProducts, p]
+            }, config)
+
+            alert('Produto adicionado ao carrinho!')
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
     return (
         <ProductContainer>
-            {console.log(p)}
             <p>{p.product}</p>
             <img src={p.image} alt={p.product} />
             <div>
                 <p>{`R$${p.price}`}</p>
-                <img src={cart} alt='buy' />
+                <img src={cart} alt='cart' onClick={addToCart} />
             </div>
-
         </ProductContainer>
     )
 }
@@ -36,7 +59,9 @@ function Category({ name, products }) {
     return (
         <CategoryContainer>
             <p>{newName}</p>
-            {newProducts.map(p => <Product p={p} />)}
+            <div>
+                {newProducts.map(p => <Product p={p} />)}
+            </div>
         </CategoryContainer>
     )
 }
@@ -109,13 +134,13 @@ justify-content: ${props => props.products.length > 0 ? 'initial' : 'center'};
 align-items: ${props => props.products.length > 0 ? 'initial' : 'center'};
 text-align: ${props => props.products.length > 0 ? 'initial' : 'center'};
 color: #B25D3A;
-font-size: 20px;
 `
 
 const ProductsListsContainer = styled.div`
 display: flex;
 flex-direction: column;
 gap: 15px;
+font-size: 20px;
 `
 
 const CategoryContainer = styled.div`
@@ -128,6 +153,12 @@ padding: 0 20px;
 background-color: white;
 border-radius: 5px;
 box-sizing: border-box;
+
+& > div {
+    display: flex;
+    gap: 20px;
+    overflow: auto;
+}
 `
 
 const ProductContainer = styled.div`
@@ -140,6 +171,7 @@ background-color: #D3E3E2;
 padding: 5px 10px;
 border-radius: 5px;
 box-sizing: border-box;
+font-size: 17px;
 
 & > img {
     width: 150px;
@@ -156,6 +188,7 @@ div {
     & > img {
         width: 20px;
         height: 20px;
+        cursor: pointer;
     }
 }
 `

@@ -12,8 +12,12 @@ export default function App() {
 
   const [token, setToken] = useState('')
 
+  const [cart, setCart] = useState('')
+
+  const [newProducts, setNewProducts] = useState([])
+
   return (
-    <UserContext.Provider value={{ token, setToken }}>
+    <UserContext.Provider value={{ token, setToken, cart, setCart, newProducts, setNewProducts }}>
       <BrowserRouter>
         <GlobalStyle />
         <Routes>
