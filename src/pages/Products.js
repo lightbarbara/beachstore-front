@@ -176,6 +176,8 @@ font-size: 17px;
 
 & > img {
     width: 150px;
+    height: 150px;
+    object-fit: cover;
     margin: 0 auto;
     box-sizing: border-box;
 }
